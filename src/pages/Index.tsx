@@ -16,11 +16,19 @@ const Index = () => {
   const filteredProducts = searchProducts(products, searchTerm1, searchTerm2);
 
   const handleProductsLoaded = (newProducts: Product[]) => {
+    if (!newProducts || newProducts.length === 0) {
+      console.log("No products to load");
+      return;
+    }
+
+    console.log(`Loading ${newProducts.length} products from CSV`);
     setIsLoading(true);
+    
     // Small delay to show loading state
     setTimeout(() => {
       setProducts(newProducts);
       setIsLoading(false);
+      console.log("Products state updated with CSV data");
     }, 500);
   };
 

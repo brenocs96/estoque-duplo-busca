@@ -21,15 +21,18 @@ const CSVUpload: React.FC<CSVUploadProps> = ({ onProductsLoaded }) => {
     
     try {
       const text = await file.text();
+      console.log("CSV text loaded, processing...");
       const products = parseCSV(text);
       
       if (products.length > 0) {
+        console.log(`Successfully parsed ${products.length} products, updating state`);
         onProductsLoaded(products);
         toast({
           title: "Produtos importados com sucesso",
           description: `${products.length} produtos foram carregados.`,
         });
       } else {
+        console.log("No products were parsed from CSV");
         toast({
           title: "Erro ao importar produtos",
           description: "O arquivo não contém produtos válidos ou está em um formato incorreto.",
@@ -37,6 +40,7 @@ const CSVUpload: React.FC<CSVUploadProps> = ({ onProductsLoaded }) => {
         });
       }
     } catch (error) {
+      console.error("Error processing CSV:", error);
       toast({
         title: "Erro ao processar arquivo",
         description: "Não foi possível ler o arquivo CSV.",
