@@ -8,26 +8,12 @@ export const parseCSV = (csvText: string): Product[] => {
       throw new Error("CSV file contains no data rows");
     }
     
-    const headers = lines[0].split(',').map(header => header.trim());
-
-    // Map the common CSV headers to our Product interface properties
-    const idIndex = headers.findIndex(h => /id|código/i.test(h));
-    const nameIndex = headers.findIndex(h => /nome|name|produto/i.test(h));
-    const descIndex = headers.findIndex(h => /desc|description|descrição/i.test(h));
-    const priceIndex = headers.findIndex(h => /preço|price|valor/i.test(h));
-    const stockIndex = headers.findIndex(h => /stock|estoque|quantidade|qtd/i.test(h));
-    const catIndex = headers.findIndex(h => /cat|categoria|category/i.test(h));
-    const imageIndex = headers.findIndex(h => /image|imagem|foto|url/i.test(h));
-
-    console.log("CSV Headers found:", {
-      idIndex,
-      nameIndex, 
-      descIndex,
-      priceIndex,
-      stockIndex,
-      catIndex,
-      imageIndex
-    });
+    // Since we know the structure: A=code, B=name
+    // We'll set these columns explicitly instead of trying to detect them
+    const idIndex = 0; // First column (A) contains the product code
+    const nameIndex = 1; // Second column (B) contains the product name
+    
+    console.log("Using fixed column structure: code=0, name=1");
 
     // Process each row after headers
     const products = lines.slice(1)
@@ -35,15 +21,15 @@ export const parseCSV = (csvText: string): Product[] => {
       .map((line, index) => {
         const values = line.split(',').map(value => value.trim());
         
-        // Create product with appropriate type handling
+        // Only care about code and name, set default values for the rest
         const product: Product = {
-          id: idIndex >= 0 ? values[idIndex] : `product-${index}`,
-          name: nameIndex >= 0 ? values[nameIndex] : 'Produto sem nome',
-          description: descIndex >= 0 ? values[descIndex] : '',
-          price: priceIndex >= 0 ? parseFloat(values[priceIndex]) || 0 : 0,
-          stock: stockIndex >= 0 ? parseInt(values[stockIndex]) || 0 : 0,
-          category: catIndex >= 0 ? values[catIndex] : 'Geral',
-          image: imageIndex >= 0 ? values[imageIndex] : undefined
+          id: values[idIndex] || `product-${index}`,
+          name: values[nameIndex] || 'Produto sem nome',
+          description: '', // Not needed
+          price: 0, // Not needed
+          stock: 0, // Not needed
+          category: 'Geral',
+          image: undefined
         };
         
         return product;
