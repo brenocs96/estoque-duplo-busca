@@ -14,22 +14,22 @@ const ProductList: React.FC<ProductListProps> = ({
 }) => {
   if (isLoading) {
     return (
-      <div className="w-full flex justify-center p-10">
-        <p className="text-white/70">Carregando produtos...</p>
+      <div className="w-full flex justify-center p-6">
+        <p className="text-gray-300">Carregando produtos...</p>
       </div>
     );
   }
 
   if (products.length === 0) {
     return (
-      <div className="w-full flex justify-center p-10">
-        <p className="text-white/70">Nenhum produto encontrado com os critérios de busca</p>
+      <div className="w-full flex justify-center p-6">
+        <p className="text-gray-300">Nenhum produto encontrado com os critérios de busca</p>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-6xl mx-auto p-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 w-full max-w-6xl mx-auto p-3">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
